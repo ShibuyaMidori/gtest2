@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -12,12 +11,13 @@ class SettingsScreen extends StatelessWidget {
         title: Text(tr('app_name')),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('Go back!'),
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: const Icon(Icons.done),
       ),
     );
   }
