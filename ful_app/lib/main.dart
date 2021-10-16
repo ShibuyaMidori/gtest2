@@ -40,33 +40,40 @@ class MainScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const MyHomePage(),
+      home: const MainPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  // final String title;
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  var _message = tr('conviction_label');
+class _MyHomePageState extends State<MainPage> {
+  var _conviction = 'Your life is yours.';
+  // int _counter = 0;
+  // var _message = tr('conviction_label');
 
-  void _incrementCounter() {
+  // void _incrementCounter() {
+  //   setState(() {
+  //     _counter++;
+  //     _message = 'change';
+  //   });
+  // }
+
+  Future<void> _getShared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter++;
-      _message = 'change';
+      _conviction = prefs.getString('conviction') ?? 'Your life is yours.';
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    _getShared();
     return Scaffold(
       appBar: AppBar(
         title: Text(tr('app_name')),
@@ -76,16 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              _message,
+              _conviction,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+            // Text(
+            //   '$_counter',
+            //   style: Theme.of(context).textTheme.headline4,
+            // ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "heroMain",
         // onPressed: _incrementCounter,
         onPressed: () {
           // 設定画面へ遷移する
