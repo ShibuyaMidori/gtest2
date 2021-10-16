@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ful_app/settings.dart';
 
-void main() async{
+void main() async {
   // runApp前に多言語対応（mainをasyncにする）
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -33,7 +34,6 @@ class MainScreen extends StatelessWidget {
       ],
       supportedLocales: _lang.supportedLocales,
       locale: _lang.locale,
-
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
@@ -84,7 +84,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        // onPressed: _incrementCounter,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SettingsScreen()));
+        },
         child: const Icon(Icons.settings),
       ),
     );
