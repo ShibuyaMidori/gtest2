@@ -8,7 +8,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // 戻るボタンを無効化
         title: Text(tr('app_name')),
       ),
       body: Center(
