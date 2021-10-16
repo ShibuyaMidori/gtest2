@@ -16,7 +16,7 @@ void main() async {
     child: const MainScreen(),
     supportedLocales: const [Locale('ja', 'JP'), Locale('en', 'US')],
     path: 'assets/translations',
-    fallbackLocale: const Locale('ja', 'JP'), // default lang
+    fallbackLocale: const Locale('en', 'US'), // default lang
   ));
 }
 
@@ -59,13 +59,13 @@ class MainPage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MainPage> {
-  var _conviction = Statics.defaultConviction;
+  var _belief = Statics.defaultBelief;
 
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction =
-          prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
+      _belief =
+          prefs.getString(Statics.belief) ?? Statics.defaultBelief;
     });
   }
 
@@ -74,11 +74,12 @@ class _MyHomePageState extends State<MainPage> {
     _getShared();
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('app_name')),
+        title: Text(tr(Statics.appName)),
       ),
       body: Center(
         child: Text(
-          _conviction,
+          _belief,
+          style: const TextStyle(fontSize: 24),
         ),
       ),
       floatingActionButton: FloatingActionButton(

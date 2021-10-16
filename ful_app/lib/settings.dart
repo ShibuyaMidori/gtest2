@@ -40,7 +40,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var _conviction = Statics.defaultConviction;
+  var _belief = Statics.defaultBelief;
   final _controller = TextEditingController();
 
   @override
@@ -52,14 +52,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction =
-          prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
+      _belief =
+          prefs.getString(Statics.belief) ?? Statics.defaultBelief;
     });
   }
 
   Future<void> _setShared() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(Statics.conviction, _controller.text);
+    if (_controller.text != ''){
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(Statics.belief, _controller.text);
+    }
   }
 
   @override
@@ -78,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
           SizedBox(
             width: double.infinity,
             child: Text(
-              _conviction,
+              _belief,
               textAlign: TextAlign.left,
             ),
           ),
@@ -89,6 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
+              hintText: Statics.inputHint,
             ),
           ),
         ]),
