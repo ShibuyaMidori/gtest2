@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ful_app/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   // runApp前に多言語対応（mainをasyncにする）
@@ -26,6 +27,7 @@ class MainScreen extends StatelessWidget {
     final _lang = EasyLocalization.of(context)!;
 
     return MaterialApp(
+      // 多言語対応
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -86,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         // onPressed: _incrementCounter,
         onPressed: () {
+          // 設定画面へ遷移する
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const SettingsScreen()));
         },
