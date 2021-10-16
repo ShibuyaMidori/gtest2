@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ful_app/settings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'common/statics.dart';
 
 void main() async {
   // runApp前に多言語対応（mainをasyncにする）
@@ -13,7 +16,7 @@ void main() async {
     child: const MainScreen(),
     supportedLocales: const [Locale('ja', 'JP'), Locale('en', 'US')],
     path: 'assets/translations',
-    fallbackLocale: const Locale('ja', 'JP'), // default lang
+    fallbackLocale: const Locale('en', 'US'), // default lang
   ));
 }
 
@@ -26,6 +29,7 @@ class MainScreen extends StatelessWidget {
     final _lang = EasyLocalization.of(context)!;
 
     return MaterialApp(
+      // 多言語対応
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
@@ -34,60 +38,54 @@ class MainScreen extends StatelessWidget {
       ],
       supportedLocales: _lang.supportedLocales,
       locale: _lang.locale,
-      title: 'Flutter Demo',
+      // title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MainPage(),
+        '/settings': (context) => const SettingsPage(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
-
-  // final String title;
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainPage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  var _message = tr('conviction_label');
+class _MyHomePageState extends State<MainPage> {
+  var _belief = Statics.defaultBelief;
 
-  void _incrementCounter() {
+  Future<void> _getShared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _counter++;
-      _message = 'change';
+      _belief =
+          prefs.getString(Statics.belief) ?? Statics.defaultBelief;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    _getShared();
     return Scaffold(
       appBar: AppBar(
-        title: Text(tr('app_name')),
+        title: Text(tr(Statics.appName)),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _message,
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: Text(
+          _belief,
+          style: const TextStyle(fontSize: 24),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: _incrementCounter,
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SettingsScreen()));
+          // 設定画面へ遷移する
+          Navigator.pushNamed(context, '/settings');
         },
         child: const Icon(Icons.settings),
       ),
