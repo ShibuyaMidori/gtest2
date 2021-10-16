@@ -8,12 +8,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(tr('app_name')),
       ),
       body: Center(
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed: _incrementCounter,
         onPressed: () {
           Navigator.pop(context);
         },
