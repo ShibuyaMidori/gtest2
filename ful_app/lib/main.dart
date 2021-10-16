@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ful_app/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'common/statics.dart';
+
 void main() async {
   // runApp前に多言語対応（mainをasyncにする）
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +38,7 @@ class MainScreen extends StatelessWidget {
       ],
       supportedLocales: _lang.supportedLocales,
       locale: _lang.locale,
-      title: 'Flutter Demo',
+      // title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
@@ -53,7 +55,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MainPage> {
-  var _conviction = 'Your life is yours.';
+  var _conviction = Statics.defaultConviction;
   // int _counter = 0;
   // var _message = tr('conviction_label');
 
@@ -67,7 +69,7 @@ class _MyHomePageState extends State<MainPage> {
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction = prefs.getString('conviction') ?? 'Your life is yours.';
+      _conviction = prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
     });
   }
 

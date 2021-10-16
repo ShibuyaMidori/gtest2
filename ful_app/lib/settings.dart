@@ -3,6 +3,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'common/statics.dart';
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -21,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
       ],
       supportedLocales: _lang.supportedLocales,
       locale: _lang.locale,
-      title: 'Flutter Demo',
+      // title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
@@ -38,18 +40,18 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  var _conviction = 'Your life is yours.';
+  var _conviction = Statics.defaultConviction;
 
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction = prefs.getString('conviction') ?? 'Your life is yours.';
+      _conviction = prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
     });
   }
 
   Future<void> _setShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('conviction', 'counter 2');
+    await prefs.setString(Statics.conviction, 'counter 2');
   }
 
   @override
