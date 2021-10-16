@@ -41,50 +41,63 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   var _conviction = Statics.defaultConviction;
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction = prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
+      _conviction =
+          prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
     });
   }
 
   Future<void> _setShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(Statics.conviction, 'counter 2');
+    await prefs.setString(Statics.conviction, _controller.text);
   }
 
   @override
   Widget build(BuildContext context) {
+    var title = tr('app_name');
     _getShared();
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false, // 戻るボタンを無効化
-        title: Text(tr('app_name')),
+        title: Text(title),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            // style: TextStyle(),
-            textAlign: TextAlign.left,
-            textAlignVertical: TextAlignVertical.center,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          SizedBox(
+            width: double.infinity,
+            child: Text(
+              _conviction,
+              textAlign: TextAlign.left,
+            ),
+          ),
+          TextFormField(
             maxLines: 4,
-            controller: TextEditingController(text: _conviction), // 初期値
+            controller: _controller,
             decoration: const InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
             ),
           ),
-        ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "heroSettings",
         onPressed: () {
           // 設定値を保存する
           _setShared();
-          // Navigator.pop(context);
+          Navigator.pop(context);
         },
         child: const Icon(Icons.done),
       ),

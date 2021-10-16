@@ -39,10 +39,14 @@ class MainScreen extends StatelessWidget {
       supportedLocales: _lang.supportedLocales,
       locale: _lang.locale,
       // title: 'Flutter Demo',
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MainPage(),
+        '/settings': (context) => const SettingsPage(),
+      },
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: const MainPage(),
     );
   }
 }
@@ -56,20 +60,12 @@ class MainPage extends StatefulWidget {
 
 class _MyHomePageState extends State<MainPage> {
   var _conviction = Statics.defaultConviction;
-  // int _counter = 0;
-  // var _message = tr('conviction_label');
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter++;
-  //     _message = 'change';
-  //   });
-  // }
 
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _conviction = prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
+      _conviction =
+          prefs.getString(Statics.conviction) ?? Statics.defaultConviction;
     });
   }
 
@@ -81,26 +77,14 @@ class _MyHomePageState extends State<MainPage> {
         title: Text(tr('app_name')),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _conviction,
-            ),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headline4,
-            // ),
-          ],
+        child: Text(
+          _conviction,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        heroTag: "heroMain",
-        // onPressed: _incrementCounter,
         onPressed: () {
           // 設定画面へ遷移する
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SettingsScreen()));
+          Navigator.pushNamed(context, '/settings');
         },
         child: const Icon(Icons.settings),
       ),
