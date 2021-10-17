@@ -52,13 +52,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _getShared() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      _belief =
-          prefs.getString(Statics.belief) ?? Statics.defaultBelief;
+      _belief = prefs.getString(Statics.belief) ?? Statics.defaultBelief;
     });
   }
 
   Future<void> _setShared() async {
-    if (_controller.text != ''){
+    if (_controller.text != '') {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(Statics.belief, _controller.text);
     }
@@ -66,7 +65,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var title = tr('app_name');
+    var title = tr(Statics.appName);
+    var hint = tr(Statics.inputHint);
     _getShared();
 
     return Scaffold(
@@ -87,11 +87,11 @@ class _SettingsPageState extends State<SettingsPage> {
           TextFormField(
             maxLines: 4,
             controller: _controller,
-            decoration: const InputDecoration(
-              enabledBorder: OutlineInputBorder(
+            decoration: InputDecoration(
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
-              hintText: Statics.inputHint,
+              hintText: hint,
             ),
           ),
         ]),
